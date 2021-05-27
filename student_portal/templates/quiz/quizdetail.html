@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+	<h4>{{ quiz.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+
+<div class="col s4">
+  <h5>Due:</h5>
+  <p>{{ quiz.due }}</p>
+</div>
+
+<div class="col s4">
+  <h5>Allowed Attempts:</h5>
+  <p>{{ quiz.allowed_attempts }}</p>
+</div>
+
+<div class="col s4">
+  <h5>Time limit:</h5>
+  <p>{{ quiz.time_limit_mins }}</p>
+</div>
+
+<div class="col s12">
+  {{ quiz.description | safe }}  
+</div>
+
+
+<div class="col s12">
+  <ul class="collection with-header">
+    <li class="collection-header"><h4>My attempts</h4></li>
+    {% for attempt in my_attempts %}
+      <li class="collection-item">
+        <a href="{% url 'attempt-detail' course_id module_id quiz.id attempt.id %}"><h5>Scored: {{ attempt.score }}</h5></a>
+      </li>
+    {% endfor %}    
+  </ul>  
+</div>
+
+
+    <div class="col s12">
+      <a class="btn" href="{% url 'take-quiz' course_id module_id quiz.id %}">Take Quiz</a>      
+    </div>
+
+
+</div>
+
+
+{% endblock %}

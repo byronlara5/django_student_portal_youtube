@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="section">
+	<h4>{{ category.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+{% for course in courses %}
+<div class="col s12 m4">
+  <div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="{{ course.picture.url }}">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4"><b>{{ course.title }}</b><i class="material-icons right">more_vert</i></span>
+      <p class="title"><b>{{ course.enrolled.count }}</b> Students</p>
+      <a href="{% url 'enroll' course.id %}" class="btn">Enroll</a>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">About<i class="material-icons right">close</i></span>
+      <p>{{ course.description }}</p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

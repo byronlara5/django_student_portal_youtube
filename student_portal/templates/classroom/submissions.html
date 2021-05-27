@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+	<h4>{{ course.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+
+<div class="col s3">
+      <ul class="collection with-header">
+        <li class="collection-header"><h4>Classroom</h4></li>
+        <a href="{% url 'course' course.id %}" class="collection-item">Home</a>
+        <a href="{% url 'modules' course.id %}" class="collection-item">Module</a>
+        <a href="{% url 'submissions' course.id %}" class="collection-item active">Submissions</a>
+        <a href="{% url 'questions' course.id %}" class="collection-item">Questions</a>
+
+      </ul>
+</div>
+
+<div class="col s9">
+
+  <div class="section">
+    <h4>My submissions</h4>
+
+      <table>
+        <thead>
+          <tr>
+              <th>Assignment</th>
+              <th>Due</th>
+              <th>Submited</th>
+              <th>Status</th>
+              <th>Score</th>
+              <th>Out of</th>
+              <th>Graded by</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for grade in grades %}
+          <tr>
+            <td>{{ grade.submission.assignment.title }}</td>
+            <td>{{ grade.submission.assignment.due }}</td>
+            <td>{{ grade.submission.date }}</td>
+            <td>{{ grade.status }}</td>
+            <td>{{ grade.points }}</td>
+            <td>{{ grade.submission.assignment.points }}</td>
+            <td>{{ grade.graded_by.get_full_name }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+
+
+  </div>
+  
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+	<h4>{{ quiz.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+
+<div class="col s4">
+  <h5>Due:</h5>
+  <p>{{ quiz.due }}</p>
+</div>
+
+<div class="col s4">
+  <h5>Allowed Attempts:</h5>
+  <p>{{ quiz.allowed_attempts }}</p>
+</div>
+
+<div class="col s4">
+  <h5>Time limit:</h5>
+  <p>{{ quiz.time_limit_mins }}</p>
+</div>
+
+<div class="col s12">
+  {{ quiz.description | safe }}  
+</div>
+
+
+<div class="col s12">
+  <form class="col s12">
+    {% csrf_token %}
+    {% for question in quiz.questions.all %}
+      <div class="col s12">
+        <br>
+        <p>{{ question.question_text }}</p>
+        <input type="hidden" name="question" value="{{ question.id }}">
+      </div>
+      {% for answer in question.answers.all %}
+        <div class="input col s12">
+          <label>
+            <input name="answer" type="checkbox" value="{{ answer.id }}" {% if answer.is_correct == True %}checked="checked"{% endif %}/>
+            <span>{{ answer.answer_text }}</span>
+          </label>          
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </form>
+</div>
+
+
+<div class="section">
+  <h5>Your answers</h5>
+  <div class="divider"></div>
+  {% for attempt in attempts %}
+    <h5 class="{% if attempt.answer.is_correct == True %}green{% else %}red{% endif %}-text"><b>{{ attempt.answer.answer_text }}</b></h5>
+  {% endfor %}
+</div>
+
+
+</div>
+
+
+{% endblock %}

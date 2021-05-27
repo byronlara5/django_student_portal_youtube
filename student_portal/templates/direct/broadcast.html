@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="center-align">
+	<h4>Select one of your courses to send a broadcast message</h4>
+	<span>Courses</span>
+
+	<form class="col s12">
+		<div class="input-field col s12">
+		<select name="course_select">
+			<option value="" disabled selected>Choose your option</option>
+			{% for course in courses %}
+				<option value="{{ course.id }}">{{ course.title }}</option>
+			{% endfor %}
+		</select>
+		<label>Select from course</label>
+		</div>
+
+		<br>
+
+		
+		<div class="input-field col s12">
+          <textarea id="message" name="message" class="materialize-textarea"></textarea>
+          <label for="message">Message to the class</label>
+        </div>
+
+		  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+		    <i class="material-icons right">send</i>
+		  </button>
+
+		
+	</form>
+	
+</div>
+
+
+
+{% endblock %}

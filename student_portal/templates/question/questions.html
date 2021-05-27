@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+	<h4>{{ course.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+
+<div class="col s3">
+      <ul class="collection with-header">
+        <li class="collection-header"><h4>Classroom</h4></li>
+        <a href="{% url 'course' course.id %}" class="collection-item">Home</a>
+        <a href="{% url 'modules' course.id %}" class="collection-item">Module</a>
+        <a href="{% url 'submissions' course.id %}" class="collection-item">Submissions</a>
+        <a href="{% url 'questions' course.id %}" class="collection-item active">Questions</a>
+
+        {% if teacher_mode == True %}
+          <li class="collection-header"><h4>Teacher</h4></li>
+          <a href="{% url 'student-submissions' course.id %}" class="collection-item">Student Submissions</a>
+        {% endif %}
+
+      </ul>
+</div>
+
+<div class="col s9">
+
+  <a href="{% url 'new-student-question' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
+
+  <div class="section">
+    <h4>Questions</h4>
+    <div class="divider"></div>
+
+    <ul class="collection">
+
+    {% for question in questions %}
+    <li class="collection-item avatar">
+      {% if question.user.profile.picture %}
+        <img src="{{ question.user.profile.picture.url }}" class="circle responsive-img">
+      {% else %}
+        <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img">
+      {% endif %} 
+      <span class="title"><b>{{ question.user.get_full_name }}</b>@{{ question.user.username }}</span>
+      <a href="{% url 'question-detail' course.id question.id %}"><h5><b>{{ question.title }}</b></h5></a>
+      <p>{{ question.body | safe | truncatechars:110 }}</p>
+      <div class="secondary-content">
+        <h5>{{ question.get_answers_count }} Answers</h5>
+        <h5>
+          {% if question.has_accepted_answer == True %}
+            <span class="new badge green" data-badge-caption="Answered"></span>
+          {% else %}
+            <span class="new badge orange" data-badge-caption="Unanswered"></span>
+          {% endif %}
+          
+        </h5>
+      </div>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <div class="col s12 m12 center-align">
+      {% if questions.has_previous %}
+        <a href="?page={{ questions.previous_page_number }}" class="btn"><i class="material-icons">arrow_back</i>Back</a>
+      {% endif %}
+
+      {% if questions.has_next %}
+        <a href="?page={{ questions.next_page_number }}" class="btn"><i class="material-icons">add</i>Load more</a>
+      {% endif %}  
+
+    </div>
+  
+
+
+  </div>
+  
+</div>
+
+
+</div>
+
+{% endblock %}

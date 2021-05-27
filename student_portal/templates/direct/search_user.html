@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="center-align">
+    <h4>Search users</h4>
+    <span>Find users that you can messsage</span>
+    <form class="col s12">
+
+        <div class="input-field col s12">
+          <select name="course_select">
+            <option value="" disabled selected>Choose your option</option>
+            {% for course in courses %}
+              <option value="{{ course.id }}">{{ course.title }}</option>
+            {% endfor %}
+          </select>
+          <label>Select from course</label>
+        </div>
+
+        <div class="input-field col s12">
+            <input name="q" value="{{ request.GET.q }}" id="search" type="text" class="validate">
+            <label for="last_name">Search</label>
+          </div>
+          <button class="btn waves-effect waves-light" type="submit" name="action">Search
+            <i class="material-icons right">send</i>
+          </button>
+    </form>
+</div>
+
+<div class="row">
+{% for person in users %}
+    <div class="col s12 m4">
+              <div class="card">
+                <div class="card-image">
+                  {% if person.profile.banner %}
+                    <img src="{{ person.profile.banner.url }}">
+                  {% else %}
+                    <img src="{% static 'img/nobanner.jpg' %}">
+                  {% endif %}
+                </div>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s4">
+                        {% if person.profile.picture %}
+                            <img src="{{ person.profile.picture.url }}" class="circle responsive-img">
+                          {% else %}
+                            <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img">
+                          {% endif %}
+                        </div>
+                        <div class="col s8">
+                            <span class="card-title">
+                                {{ person.get_full_name }}
+                            </span>
+                            <br>
+                            <span>@<b>{{ person.username }}</b></span>
+                            <p>{{ person.profile.profile_info }}</p>
+                            <a href="{% url 'new-conversation' person.username %}" class="waves-effect waves-light btn"><i class="material-icons right">send</i>Send a message!</a>
+                        </div>
+                    </div>
+                </div>
+              </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}
